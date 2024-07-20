@@ -23,6 +23,14 @@ jobs:
     - name: Publish .NET Core Project
       run: dotnet publish -c Release --output release --nologo
 
+      # меняем '/' на '/<НазваниеРепозитория>/'
+    - name: Change base-tag in index.html from / to LentaCard
+      run: sed -i 's/<base href="\/" \/>/<base href="\/LentaCard\/" \/>/g' release/wwwroot/index.html
+
+      # отключаем jekyll
+    - name: Add .nojekyll file
+      run: touch release/wwwroot/.nojekyll
+      
       # закидываем в бранч gh-pages
     - name: Uploading files to gh-pages branch
       uses: JamesIves/github-pages-deploy-action@4.1.4
