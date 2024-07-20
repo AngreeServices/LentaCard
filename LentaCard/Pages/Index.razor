@@ -1,0 +1,81 @@
+﻿@page "/"
+@using LentaCard.Core;
+@inject ICardImageService CardImageService
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div class="error-message">
+        @ErrorMessage
+    </div>
+}
+else if (!string.IsNullOrEmpty(ImageDataUrl))
+{
+    <div class="fullscreen-image">
+        <img src="@ImageDataUrl" alt="Card Image" />
+    </div>
+}
+
+@code {
+    private string ImageDataUrl { get; set; }
+    private string ErrorMessage { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        var code = queryParameters["code"];
+
+        if (string.IsNullOrEmpty(code) || code.Length != 12)
+        {
+            ErrorMessage = "A 12-digit code is required.";
+            return;
+        }
+
+        try
+        {
+            byte[] imageBytes = CardImageService.GenerateCardImage(code);
+            ImageDataUrl = $"data:image/png;base64,{Convert.ToBase64String(imageBytes)}";
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"An error occurred: {ex.Message}";
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !string.IsNullOrEmpty(ImageDataUrl))
+        {
+            await JSRuntime.InvokeVoidAsync("setFullscreenImage");
+        }
+    }
+}
+
+<style>
+    .fullscreen-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+    }
+
+        .fullscreen-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+    .error-message {
+        color: red;
+        font-size: 18px;
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
