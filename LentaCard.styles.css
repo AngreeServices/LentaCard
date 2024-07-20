@@ -1,0 +1,71 @@
+/* _content/LentaCard/Shared/MainLayout.razor.rz.scp.css */
+.page[b-yg6v9teiom] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-yg6v9teiom] {
+    flex: 1;
+}
+
+.sidebar[b-yg6v9teiom] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-yg6v9teiom] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-yg6v9teiom]  a, .top-row .btn-link[b-yg6v9teiom] {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+    }
+
+    .top-row a:first-child[b-yg6v9teiom] {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row:not(.auth)[b-yg6v9teiom] {
+        display: none;
+    }
+
+    .top-row.auth[b-yg6v9teiom] {
+        justify-content: space-between;
+    }
+
+    .top-row a[b-yg6v9teiom], .top-row .btn-link[b-yg6v9teiom] {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page[b-yg6v9teiom] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-yg6v9teiom] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-yg6v9teiom] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row[b-yg6v9teiom], article[b-yg6v9teiom] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
